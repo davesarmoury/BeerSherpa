@@ -48,7 +48,7 @@
   <joint name="zed_mount_joint" type="fixed">
     <parent link="arm_end_effector_link" />
     <child link="zed_mount_link" />
-    <origin xyz="-0.0411851 0 0.01916" rpy="0 -1.91986 0"/>
+    <origin xyz="0.0411851 0 0.01916" rpy="0 -1.91986 3.14159"/>
   </joint>
 
   <link name="zed_mount_link" />
