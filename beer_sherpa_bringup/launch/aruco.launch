@@ -1,0 +1,8 @@
+<launch>
+  <include file="$(find aruco_detect)/launch/aruco_detect.launch">
+    <arg name="camera" value="zed_node/rgb_raw/"/>
+    <arg name="image" value="image_raw_color"/>
+    <arg name="fiducial_len" value="0.03"/>
+    <arg name="dictionary" value="1"/>
+  </include>
+</launch>

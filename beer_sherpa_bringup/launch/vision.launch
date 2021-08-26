@@ -1,0 +1,4 @@
+<launch>
+  <include file="$(find beer_sherpa_bringup)/launch/zed_camera.launch"/>
+  <include file="$(find beer_sherpa_bringup)/launch/aruco.launch"/>
+</launch>
