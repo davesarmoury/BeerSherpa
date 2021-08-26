@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:arg name="arm" default="$(optenv DINGO_ARM_MODEL gen3_lite)" />
+  <xacro:arg name="dof" default="$(optenv DINGO_ARM_DOF 6)" />
+  <xacro:arg name="vision" default="$(optenv DINGO_ARM_VISION true)" />
+
+  <xacro:arg name="gripper" default="$(optenv DINGO_ARM_GRIPPER gen3_lite_2f)" />
+
+  <xacro:arg name="sim" default="$(optenv DINGO_ARM_SIM false)" />
+  <xacro:arg name="prefix" default="$(optenv DINGO_ARM_PREFIX arm_)" />
+
+  <xacro:include filename="$(find kortex_description)/robots/kortex_robot.xacro" />
+  <xacro:load_robot arm="$(arg arm)" gripper="$(arg gripper)" dof="$(arg dof)" vision="$(arg vision)" sim="$(arg sim)" prefix="$(arg prefix)" />
+
+  <joint name="arm_mount_joint" type="fixed">
+    <origin xyz="$(optenv DINGO_ARM_XYZ 0.0 0.0 0.0)" rpy="$(optenv DINGO_ARM_RPY 0 0 0)"/>
+    <parent link="$(optenv DINGO_ARM_MOUNT front_b_mount)" />
+    <child link="$(arg prefix)base_link" />
+  </joint>
+
+  <xacro:if value="$(optenv DINGO_ARM_EXTERNAL_POWER 0)">
+    <link name="$(arg arm)_power">
+      <visual>
+        <geometry>
+          <box size="0.185 0.1 0.04" />
+        </geometry>
+        <material name="white">
+          <color rgba="1 1 1 1" />
+        </material>
+        <origin xyz="0 0 0.02" rpy="0 0 0" />
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.185 0.1 0.04" />
+        </geometry>
+        <origin xyz="0 0 0.02" rpy="0 0 0" />
+      </collision>
+    </link>
+    <joint name="$(arg arm)_power_joint" type="fixed">
+      <parent link="$(optenv DINGO_ARM_EXTERNAL_POWER_MOUNT rear_b_mount)"/>
+      <child link="$(arg arm)_power" />
+      <origin xyz="$(optenv DINGO_ARM_EXTERNAL_POWER_XYZ 0 0 0)" rpy="$(optenv DINGO_ARM_EXTERNAL_POWER_RPY 0 0 0)" />
+    </joint>
+  </xacro:if>
+
+  <xacro:include filename="$(find zed_interfaces)/urdf/zed_descr.urdf.xacro"/>
+
+  <joint name="zed_mount_joint" type="fixed">
+    <parent link="arm_end_effector_link" />
+    <child link="zed_mount_link" />
+    <origin xyz="-0.0411851 0 0.01916" rpy="0 -1.91986 0"/>
+  </joint>
+
+  <link name="zed_mount_link" />
+
+  <joint name="zed_joint" type="fixed">
+    <parent link="zed_mount_link" />
+    <child link="zed_link" />
+    <origin xyz="0 0 0.015" rpy="0 0 0"/>
+  </joint>
+</robot>
